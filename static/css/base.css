@@ -10,6 +10,7 @@
       font-family: 'Dongle';
       font-size: 25px;
       overflow: auto;
+      min-height: 100vh;
     }
 
 .nav-link{
@@ -159,12 +160,29 @@ height: 20vh;
   text-align: center;
   justify-content: center;
   background-color: orange;
+  position: sticky;
+  top: 80%;
+  margin-top: auto;
+  bottom: 0;
 }
+
+.sticky-footer{
+  position: sticky;
+  top: 100%;
+  margin-top: auto;
+  bottom: 0;
+}
+
 
 
 @media only screen and (min-width: 768px) {
   .nav-search{
     margin-right: 10%;
+  }
+  
+  .Error-search{
+    margin-left: 40%;
+    margin-top: 10%;
   }
   
 }
@@ -203,6 +221,12 @@ height: 20vh;
   .related-product {
     margin-top: 10%;
   }
-    
+  
+
+  .Error-search{
+    margin-top: 30%;
+    margin-left: 30%;
+  }
+  
   
 }

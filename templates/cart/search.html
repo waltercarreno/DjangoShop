@@ -12,7 +12,6 @@
 {% block content %}
        
     <div class="row">
-        {% if object_list %}
         {% for product in object_list %}
          <div class="col-lg-4">
              <div class="card allproducts">
@@ -33,11 +32,6 @@
              </div>
         </div>
         {% endfor %}
-        {% else %}
-        <div class="Error-search">
-            <h4 > Not results found. </h4>
-        </div>
-      {% endif %}
     </div>
 
     <div class="pagination">

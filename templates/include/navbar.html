@@ -40,9 +40,9 @@
           </div>
           </li>
         </ul>
-        <form method="GET" action=#  class="d-flex ms-auto ">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+        <form class="form" method="GET" action="{% url 'cart:products' %}">
+          <input type='text' name='q' value='{{ request.GET.q }}'>
+          <input class="button" type='submit' value="Search Profile">
         </form>
       </div>
     </div>
