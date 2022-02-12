@@ -113,22 +113,26 @@ color: white;
 
 /* All products */
 
+
+.col-lg-3 {
+  display: flex;
+}
+
+
+
 .allproducts {
     background-color: lightgray;
     font-weight: bold;
     font-size: 1.2em;
+    margin-top: 10%;
 }
 
-
-.allproducts .card-image-top {
-    width: 100%;
-    height: 30vh;
-    object-fit: cover;
-  }
-
-.allproducts .card-content {
-  height: 20vh;
+.card-img-top {
+  width: 100%;
+  height: 25vw;
+  object-fit: cover;
 }
+
 
 /* Related product */
 
