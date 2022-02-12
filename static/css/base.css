@@ -153,8 +153,13 @@ color: white;
 height: 20vh;
 }
 
-/* Pagination * /
-/* Media querys */
+.pagination {
+  font-size: 1.5rem;
+  margin-top: 5%;
+  text-align: center;
+  justify-content: center;
+  background-color: orange;
+}
 
 
 @media only screen and (min-width: 768px) {
