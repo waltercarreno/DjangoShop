@@ -1,6 +1,7 @@
 from django.views import generic
 from .models import Product
 from django.contrib import messages
+from django.shortcuts import render
 
 class ProductListView(generic.ListView):
     template_name = 'cart/products.html'
@@ -13,3 +14,7 @@ class ProductListView(generic.ListView):
         else: 
             object_list = self.model.objects.all()
         return object_list
+
+class ProductDetailView(generic.DetailView):
+    template_name = 'cart/productdetail.html'
+    queryset = Product.objects.all()

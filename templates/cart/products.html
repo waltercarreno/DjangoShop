@@ -16,7 +16,7 @@
         {% for product in object_list %}
          <div class="col-lg-4">
              <div class="card allproducts">
-                <a href="#">
+                <a href="{{ product.get_absolute_url }}">
                   <div class="card-body">
                       <img class=" card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}">
                   </div>

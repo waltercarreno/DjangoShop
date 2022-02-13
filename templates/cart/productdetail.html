@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+<div class="container single-product">
+    <div class="row">
+        <div class="col-lg-5 ">
+            <div class="image-container">
+            {% if product.image %}
+            <img class=" img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}"  class="card-img-top" width = "100%">
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <h4><i style="color:yellow;"class="fa fa-star" style="font-size: small;"></i>{{ product.rating }}/5</h4>
+            {% else %}
+            <h4><i class="fa fa-star" style="font-size: small;"></i>No rating</h4>
+            {% endif %}
+            <h4>{{ product.name }}</h4>
+            <h4>{{ product.price }} $</h4>
+            <select>
+                <option> Select Size</option>
+                <option> XXL</option>
+                <option> L</option>
+                <option> M</option>
+                <option> S</option>
+            </select>
+            <p>{{ product.description }}</p>
+            <div>
+                <form class="form" action="#" method="POST">
+                    {% csrf_token %}
+                    <div id="SelectedProduct">
+                        <h3 class="product-price">{{ product.price }}</h3>
+                        <div class="qty-input">
+                            <span class="text-uppercase">QTY: </span>
+                            <input class="input" name="quantity" type="number" value="1" min="1" max="{{ product.amount }}">
+                            <button type="submit" {% if product.amount < 1  %} disabled {% endif %} class="primary-btn add-to-cart">
+                                <i class="fa fa-shopping-cart"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block postloadjs %}
+
+{% endblock %}
