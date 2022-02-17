@@ -15,6 +15,3 @@ class ProductListView(generic.ListView):
             object_list = self.model.objects.all()
         return object_list
 
-class ProductDetailView(generic.DetailView):
-    template_name = 'cart/productdetail.html'
-    queryset = Product.objects.all()
