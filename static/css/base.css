@@ -94,14 +94,7 @@ color: white;
   margin-top: 10%;
 }
 
-.single-product input{
-  width: 20%;
-  height: 15%;
-  padding-left: 5%;
-  font-size: 2rem;
-  border: 1px solid orange;
-  margin-right:10%;
-}
+
 
 .product-button{
   background: orange;

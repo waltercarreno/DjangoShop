@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container cart-page">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="container cart-page">
+    <table>
+        <tr>
+            <th scope="col">Image</th>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Total </th>
+            <th scope="col">Actions </th>
+        </tr>
+        {% for item in order.items.all %}
+        <tr>
+            <td class="p-3 w-25">
+                <img src="{{ item.product.image.url }}" class="img-fluid">
+            </td>
+            <td class="p-3 w-10">
+                <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                <p class="my-0 small text-muted">SKU: {{ item.product.sku|upper }}</p>
+            </td>
+            <td class="p-3 w-10">${{ item.product.get_price }}</td>
+            <td class="p-3 w-10">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <a href="#" class="btn btn-outline-primary">
+                                                &minus;
+                                            </a>
+                                        </div>
+                                        <input type="text" class="form-control text-center" value="{{ item.quantity }}">
+                                        <div class="input-group-append">
+                                            <a href="#" class="btn btn-outline-primary">
+                                                &plus;
+                                            </a>
+                                        </div>
+                                    </div>
+            </td>
+            <td>
+                ${{ item.get_total_item_price }}
+            </td>
+            <td>
+                <a href="#" class="btn btn-primary btn-sm">X</a>
+            </td>
+
+
+        </tr>
+        {% endfor %}
+        <tr>
+        </tr>
+    </table>
+    <div class="bg-light text-center text-uppercase ">Order summary </div>
+    <div class="text-right">
+        <h6><strong>Bag Total: €{{ total|floatformat:2 }}</strong></h6>
+        <h6>Delivery: €{{ delivery|floatformat:2 }}</h6>
+        <ul class="list-unstyled mb-4">
+            <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total Amount
+                    Due</strong>
+                <h5 class="font-weight-bold">€ {{ grand_total|floatformat:2 }}</h5>
+            </li>
+        </ul><a href="#" class="btn btn-success text-white rounded-pill py-2 btn-block">Proceed
+            to checkout</a>
+    </div>
+</div>
+
+{% endblock %}

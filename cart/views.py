@@ -1,12 +1,17 @@
+from django.shortcuts import get_object_or_404, reverse
 from django.views import generic
 from .models import Product
 from django.contrib import messages
 from django.shortcuts import render
+from .utils import get_order_session
+from .forms import AddToCartForm
 
 class ProductListView(generic.ListView):
+    """A View that  contents products and pagination."""
     template_name = 'cart/products.html'
     model = Product
     paginate_by = 3
+    """Used to filter throw the data""" 
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
@@ -15,3 +20,47 @@ class ProductListView(generic.ListView):
             object_list = self.model.objects.all()
         return object_list
 
+class ProductDetailView(generic.FormView):
+    template_name = 'cart/product_detail.html'
+    """ We have to pick forms from forms.py"""
+    form_class = AddToCartForm
+
+    def get_object(self):
+        return get_object_or_404(Product, slug=self.kwargs["slug"])
+
+    def get_success_url(self):
+        return reverse("home")  
+    
+    def form_valid(self, form):
+        order = get_order_session(self.request)
+        product = self.get_object()
+        
+        """ We want to check if the item is in the bag or not"""
+        item_filter = order.items.filter(product=product)
+
+        """ If exist increase quantity and get that item. If it doesn't we add to the bag"""
+        if item_filter.exists():
+            item = item_filter.first()
+            item.quantity = int(form.cleaned_data['quantity'])
+            item.save()       
+        else:
+            new_item = form.save(commit=False)
+            new_item.product = product
+            new_item.order = order
+            new_item.save()
+
+        return super(ProductDetailView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(**kwargs)
+        context['product'] = self.get_object()
+        return context
+
+
+class BagView(generic.TemplateView):
+    template_name = "cart/bag.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(BagView, self).get_context_data(**kwargs)
+        context["order"] = get_order_session(self.request)
+        return context
