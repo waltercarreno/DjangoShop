@@ -1,6 +1,6 @@
-from django.shortcuts import get_object_or_404, reverse
+from django.shortcuts import get_object_or_404, reverse, redirect
 from django.views import generic
-from .models import Product
+from .models import Product, OrderItem
 from django.contrib import messages
 from django.shortcuts import render
 from .utils import get_order_session
@@ -59,8 +59,36 @@ class ProductDetailView(generic.FormView):
 
 class BagView(generic.TemplateView):
     template_name = "cart/bag.html"
-
+    """ We have to get the bag and parse it the order"""
     def get_context_data(self, **kwargs):
         context = super(BagView, self).get_context_data(**kwargs)
         context["order"] = get_order_session(self.request)
         return context
+
+class IncreaseProductView(generic.View):
+    """ We have to get the item in the order to be able to modify quantity"""
+    def get(self, request, *args, **kwargs):
+        order_item = get_object_or_404(OrderItem, id=kwargs['pk'])
+        order_item.quantity += 1
+        order_item.save()
+        return redirect("cart:bag")
+
+
+class DecreaseProductView(generic.View):
+    """ We have to get the item in the order to be able to modify quantity"""
+    def get(self, request, *args, **kwargs):
+        order_item = get_object_or_404(OrderItem, id=kwargs['pk'])
+        if order_item.quantity <= 1:
+            order_item.delete()
+        else:
+            order_item.quantity -= 1
+            order_item.save()
+        return redirect("cart:bag")
+
+
+class RemoveProductView(generic.View):
+    """ We have to get the item in the order to be able to modify quantity"""
+    def get(self, request, *args, **kwargs):
+        order_item = get_object_or_404(OrderItem, id=kwargs['pk'])
+        order_item.delete()
+        return redirect("cart:bag")
