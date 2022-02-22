@@ -1,50 +1,33 @@
 <nav class="navbar navbar-expand-lg center-fixed bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span ></span>
-        <span ></span>
-        <span ></span>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="navbar-toggler-icon">   
+          <i class="fas fa-bars" style="color:orange; font-size:28px;"></i>
+      </span>
       </button>
-      <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a href="#" class="site-cart">
-              <span><i class="fas fa-shopping-cart"></i></span>
-              <span class="count">0</span>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Categories
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a href="#" class="dropdown-item">Shoes</a>
-              <a href="#" class="dropdown-item">Jeans</a>
-              <a href="#" class="dropdown-item">Shirts</a>
-              <a href="#" class="dropdown-item">Accessories</a>
-            </ul>
-          </li>
+      <div class="collapse navbar-collapse justify-content-between" id="navCollapse">
+        <ul class="navbar-nav m-auto my-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Contact</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Purchase</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Order by
-            </a>
-            <div class="dropdown-menu border-0" aria-labelledby="all-products-link">
-              <a href="#" class="dropdown-item">By Price</a>
-              <a href="#" class="dropdown-item ">By Rating</a>
-              <a href="#" class="dropdown-item ">By Category</a>
-              <a href="#" class="dropdown-item">All Products</a>
-          </div>
+          <li class="nav-item">
+            <li class="list-inline-item">
+              <a class="{% if order.get_subtotal %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link" href="{% url 'cart:bag' %}">
+                  <div class="text-center">
+                      <div><i class="fas fa-shopping-bag fa-lg"></i></div>
+                      <p class="my-0">
+                  </div>
+              </a>
+          </li>
           </li>
         </ul>
         <form class="form" method="GET" action="{% url 'cart:products' %}">
-          <input type='text' name='q' value='{{ request.GET.q }}'>
-          <input class="button" type='submit' value="Search Profile">
+          <input type='text' class="search" name='q' value='{{ request.GET.q }}'>
+          <input class="button btn0" type='submit' value="Search">
         </form>
       </div>
     </div>

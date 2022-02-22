@@ -82,11 +82,11 @@ class OrderItem(models.Model):
         return f"{self.quantity} x {self.product.name}"
 
     def get__item_price(self):
+        """We get quantity and multiply * price"""
         return self.quantity * self.product.price
 
     def get_total_item_price(self):
         price = self.get__item_price()  
-        """To get 2 decimal numbers"""
         return "{:.2f}".format(price )
 
 
@@ -113,7 +113,29 @@ class Order(models.Model):
     @property
     def reference_number(self):
         return f"ORDER-{self.pk}"
+    
+    def get_raw_subtotal(self):
+        total = 0
+        for order_item in self.items.all():
+            total += order_item.get__item_price()
+        return total
 
+    def get_subtotal(self):
+        subtotal = self.get_raw_subtotal()
+        return "{:.2f}".format(subtotal)
+
+    def get_raw_total(self):
+        subtotal = self.get_raw_subtotal()
+        delivery = 5
+        if subtotal > 50:
+            total = subtotal
+        else:
+            total = subtotal + delivery
+        return total
+
+    def get_total(self):
+        total = self.get_raw_total()
+        return "{:.2f}".format(total)
 
 def pre_save_product_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:

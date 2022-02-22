@@ -62,19 +62,20 @@
             <a class="btn btn-success text-white" href="{% url 'cart:products' %}" role="button">Cart Empty - Return to
                 Shop</a>
         </div>
-        {% endif %} 
+        {% endif %}
+        {% if order.items.count > 0 %}
         <div class="bg-light text-center text-uppercase ">Order summary </div>
         <div class="text-right">
-            <h6><strong>Bag Total: €{{ total|floatformat:2 }}</strong></h6>
-            <h6>Delivery: €{{ delivery|floatformat:2 }}</h6>
+            <h6><strong>SubTotal: ${{ order.get_subtotal }}</strong></h6>
             <ul class="list-unstyled mb-4">
                 <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total Amount
                         Due</strong>
-                    <h5 class="font-weight-bold">€ {{ grand_total|floatformat:2 }}</h5>
+                    <h5 class="font-weight-bold">$ {{ order.get_total }}</h5>
                 </li>
             </ul><a href="#" class="btn btn-success text-white rounded-pill py-2 btn-block">Proceed
                 to checkout</a>
         </div>
+        {% endif %}
     </div>
 </div>
 

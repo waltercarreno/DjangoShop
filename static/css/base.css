@@ -31,10 +31,15 @@
 
 .search{
   height: 40px;
-  width: 80%;
-  border-radius: 60%;
-  outline: none;
-  border: 2px solid;
+  width: 60%;
+  border: 2px solid pink;
+}
+
+.btn0{
+  height: 40px;
+  width: 20%;
+  border: none;
+  background-color: orange;
 }
   
 .main {
@@ -58,9 +63,6 @@ font-family: 'Dongle';
 color: white;
 }
 
-.navbar-toggler {
-  background: sandybrown;
-}
 
 .div-index {
   margin-left: 10%;
@@ -93,7 +95,6 @@ color: white;
   padding: 5%;
   margin-top: 10%;
 }
-
 
 
 .product-button{
@@ -181,16 +182,9 @@ height: 20vh;
 }
 
 @media only screen and (max-width: 768px) {
-  .flexbox{
-    align-items: center;
-    display: flex;
-    height: 100px;
-    justify-content: center;
-    width: 200px;
-  }
 
   .div-index{
-    margin-top: 120%;
+    margin-top: 20%;
   }
 
   .btn1{
@@ -220,6 +214,5 @@ height: 20vh;
     margin-top: 30%;
     margin-left: 30%;
   }
-  
   
 }
