@@ -1,9 +1,10 @@
 
 from .models import Order
-"""
-Utils to handle sessions
-"""
+"""Utils to handle sessions"""
+
+
 def get_order_session(request):
+    """We try to get the order by the id"""
     order_id = request.session.get('order_id', None)
     if order_id is None:
         order = Order()

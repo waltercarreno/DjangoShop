@@ -4,21 +4,23 @@ from .models import Product, OrderItem
 from django.contrib import messages
 from django.shortcuts import render
 from .utils import get_order_session
-from .forms import AddToCartForm
+from .forms import AddToCartForm, Addressform
+
 
 class ProductListView(generic.ListView):
     """A View that  contents products and pagination."""
     template_name = 'cart/products.html'
     model = Product
     paginate_by = 3
-    """Used to filter throw the data""" 
+    """Used to filter throw the data"""
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
             object_list = self.model.objects.filter(name__icontains=query)
-        else: 
+        else:
             object_list = self.model.objects.all()
         return object_list
+
 
 class ProductDetailView(generic.FormView):
     template_name = 'cart/product_detail.html'
@@ -29,20 +31,17 @@ class ProductDetailView(generic.FormView):
         return get_object_or_404(Product, slug=self.kwargs["slug"])
 
     def get_success_url(self):
-        return reverse("home")  
-    
+        return reverse("home")
+
     def form_valid(self, form):
         order = get_order_session(self.request)
         product = self.get_object()
-        
-        """ We want to check if the item is in the bag or not"""
         item_filter = order.items.filter(product=product)
 
-        """ If exist increase quantity and get that item. If it doesn't we add to the bag"""
         if item_filter.exists():
             item = item_filter.first()
             item.quantity = int(form.cleaned_data['quantity'])
-            item.save()       
+            item.save()
         else:
             new_item = form.save(commit=False)
             new_item.product = product
@@ -65,9 +64,11 @@ class BagView(generic.TemplateView):
         context["order"] = get_order_session(self.request)
         return context
 
+
 class IncreaseProductView(generic.View):
     """ We have to get the item in the order to be able to modify quantity"""
     def get(self, request, *args, **kwargs):
+        del request, args
         order_item = get_object_or_404(OrderItem, id=kwargs['pk'])
         order_item.quantity += 1
         order_item.save()
@@ -77,6 +78,7 @@ class IncreaseProductView(generic.View):
 class DecreaseProductView(generic.View):
     """ We have to get the item in the order to be able to modify quantity"""
     def get(self, request, *args, **kwargs):
+        del args, request
         order_item = get_object_or_404(OrderItem, id=kwargs['pk'])
         if order_item.quantity <= 1:
             order_item.delete()
@@ -89,6 +91,12 @@ class DecreaseProductView(generic.View):
 class RemoveProductView(generic.View):
     """ We have to get the item in the order to be able to modify quantity"""
     def get(self, request, *args, **kwargs):
+        del request, args
         order_item = get_object_or_404(OrderItem, id=kwargs['pk'])
         order_item.delete()
         return redirect("cart:bag")
+
+
+class CheckoutView(generic.FormView):
+    template_name = "cart/checkout.html"
+    form_class = Addressform

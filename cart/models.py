@@ -1,11 +1,12 @@
+"""
+All models.
+"""
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import pre_save
 from django.shortcuts import reverse
 from django.utils.text import slugify
-"""
-Models created.
-"""
+
 
 User = get_user_model()
 
@@ -32,7 +33,9 @@ class Address(models.Model):
         {self.city}, {self.zip_code}"
 
     class Meta:
+        """Fixing typing error"""
         verbose_name_plural = 'Addresses'
+
 
 class Category(models.Model):
     """
@@ -57,16 +60,17 @@ class Product(models.Model):
                                  null=True, blank=True)
     image = models.ImageField()
     active = models.BooleanField(default=False)
-   
+
     def __str__(self):
         return str(self.name)
-    
+
     def get_absolute_url(self):
+        """Redirect to product template.Slug to identify item"""
         return reverse("cart:product-detail", kwargs={'slug': self.slug})
 
     def get_price(self):
         """To get 2 decimal numbers"""
-        return "{:.2f}".format(self.price)
+        return str(self.price)
 
 
 class OrderItem(models.Model):
@@ -86,8 +90,9 @@ class OrderItem(models.Model):
         return self.quantity * self.product.price
 
     def get_total_item_price(self):
-        price = self.get__item_price()  
-        return "{:.2f}".format(price )
+        """We use the previous function to calculate the total price"""
+        price = self.get__item_price()
+        return price
 
 
 class Order(models.Model):
@@ -112,19 +117,23 @@ class Order(models.Model):
 
     @property
     def reference_number(self):
+        """We take our primary key in select our order"""
         return f"ORDER-{self.pk}"
-    
+
     def get_raw_subtotal(self):
+        """We Calculate the number of items in our bag and the price"""
         total = 0
         for order_item in self.items.all():
             total += order_item.get__item_price()
         return total
 
     def get_subtotal(self):
+        """We calculate our subtotal"""
         subtotal = self.get_raw_subtotal()
-        return "{:.2f}".format(subtotal)
+        return subtotal
 
     def get_raw_total(self):
+        """We calculate our total and delivery cost"""
         subtotal = self.get_raw_subtotal()
         delivery = 5
         if subtotal > 50:
@@ -134,8 +143,10 @@ class Order(models.Model):
         return total
 
     def get_total(self):
+        """We get our total cost """
         total = self.get_raw_total()
-        return "{:.2f}".format(total)
+        return total
+
 
 def pre_save_product_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:

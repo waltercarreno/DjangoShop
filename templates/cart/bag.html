@@ -72,7 +72,7 @@
                         Due</strong>
                     <h5 class="font-weight-bold">$ {{ order.get_total }}</h5>
                 </li>
-            </ul><a href="#" class="btn btn-success text-white rounded-pill py-2 btn-block">Proceed
+            </ul><a href="{% url 'cart:checkout' %}" class="btn btn-success text-white rounded-pill py-2 btn-block">Proceed
                 to checkout</a>
         </div>
         {% endif %}

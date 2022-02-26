@@ -6,4 +6,7 @@ class AddToCartForm(forms.ModelForm):
     class Meta:
         model = OrderItem
         fields = ['quantity']
-           
+
+
+class Addressform(forms.Form):
+    pass
