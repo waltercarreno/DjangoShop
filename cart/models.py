@@ -21,15 +21,15 @@ class Address(models.Model):
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    address_line_1 = models.CharField(max_length=150)
-    address_line_2 = models.CharField(max_length=150)
+    address_line = models.CharField(max_length=150)
     city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
     zip_code = models.CharField(max_length=20)
     address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     default = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.address_line_1}, {self.address_line_2},\
+        return f"{self.address_line}, {self.country},\
         {self.city}, {self.zip_code}"
 
     class Meta:
@@ -69,7 +69,7 @@ class Product(models.Model):
         return reverse("cart:product-detail", kwargs={'slug': self.slug})
 
     def get_price(self):
-        """To get 2 decimal numbers"""
+        """To get price"""
         return str(self.price)
 
 
@@ -130,22 +130,31 @@ class Order(models.Model):
     def get_subtotal(self):
         """We calculate our subtotal"""
         subtotal = self.get_raw_subtotal()
-        return subtotal
+        return "{:.2f}".format(subtotal)
+    
+
+    def get_delivery(self):
+        subtotal = self.get_raw_subtotal()
+        delivery = 0
+        if subtotal > 50:
+            delivery = 0
+        else:
+            delivery = float(5)
+        return "{:.2f}".format(delivery)
 
     def get_raw_total(self):
         """We calculate our total and delivery cost"""
         subtotal = self.get_raw_subtotal()
-        delivery = 5
-        if subtotal > 50:
-            total = subtotal
-        else:
-            total = subtotal + delivery
+        subtotal = float(subtotal)
+        delivery = self.get_delivery()
+        delivery = float(delivery)
+        total = subtotal + delivery
         return total
 
     def get_total(self):
         """We get our total cost """
         total = self.get_raw_total()
-        return total
+        return "{:.2f}".format(total)
 
 
 def pre_save_product_receiver(sender, instance, *args, **kwargs):
