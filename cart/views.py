@@ -5,6 +5,10 @@ from django.contrib import messages
 from django.shortcuts import render
 from .utils import get_order_session
 from .forms import AddToCartForm, Addressform
+import stripe
+from django.conf import settings
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class ProductListView(generic.ListView):
@@ -102,7 +106,7 @@ class CheckoutView(generic.FormView):
     form_class = Addressform
 
     def get_success_url(self):
-        return reverse("home")
+        return reverse("cart:payment")
 
     def form_valid(self, form):
         "We have to validate our form and select our order session"
@@ -153,3 +157,17 @@ class CheckoutView(generic.FormView):
         context = super(CheckoutView, self).get_context_data(**kwargs)
         context["order"] = get_order_session(self.request)
         return context
+    
+class PaymentView(generic.TemplateView):
+    template_name = 'cart/payment.html'
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        if not user.customer.stripe_customer_id:
+            stripe_customer = stripe.Customer.create(email=user.email)
+            user.customer.stripe_customer_id = stripe_customer["id"]
+            user.customer.save()
+
+            context = super(PaymentView, self).get_context_data(**kwargs)
+            context["STRIPE_PUBLIC_KEY"] = settings.STRIPE_PUBLIC_KEY
+            return context

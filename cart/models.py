@@ -23,7 +23,7 @@ class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address_line = models.CharField(max_length=150)
     city = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
+    country = models.CharField(max_length=100, null=True)
     zip_code = models.CharField(max_length=20)
     address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     default = models.BooleanField(default=False)

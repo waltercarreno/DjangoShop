@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+{% if order.items.count > 0 %}
 <div class="container cart-page">
     {% if not request.user.is_authenticated %}
     <div class="col-12">
@@ -82,6 +83,7 @@
         </div>
     </form>
     {% endif %}
+{% endif %}
 </div>
 
 {% endblock %}
