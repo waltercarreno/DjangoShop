@@ -1,7 +1,7 @@
 core.Microsoft*
 core.mongo*
 core.python*
-cart/env.py
+core/env.py
 __pycache__/
 *.py[cod]
 node_modules/
